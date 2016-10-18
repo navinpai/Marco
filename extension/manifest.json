@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "version": 1,
+  "name": "Marco - Fulfil Your Wanderlust!",
+  "description": "Marco is a Chrome extension which uses your browsing data to determine places you want to travel to!",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "icons/icon_64.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["style.css"],
+      "js": ["jquery.min.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": [
+    "tabs", "<all_urls>"
+  ],
+  "icons": {
+    "16": "icons/icon_16.png",
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
+  },
+  "background": {
+    "scripts": ["jquery.min.js", "background.js"]
+  }
+}

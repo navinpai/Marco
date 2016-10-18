@@ -1,0 +1,27 @@
+body {
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 100%;
+    background: #cccccc;
+}
+
+#status {
+    white-space: pre;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 600px;
+}
+
+a, a:hover{
+    color: #800000;
+}
+
+.text{
+    font-style: italic;
+    text-align: center;
+    font-size: 80%;
+}
+
+#top-img {
+  width: 120px;
+}
+
