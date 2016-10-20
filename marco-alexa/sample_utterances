@@ -1,0 +1,23 @@
+Marco to plan a trip for me
+Marco where should I go
+Marco where can I go
+Marco which is the best place to visit for me
+Marco to plan a trip
+Marco what can I do in {City-US}
+Marco what can I do in {City-UK}
+Marco what can I do in {City-EU}
+Marco what to do in {City-US}
+Marco what to do in {City-UK}
+Marco what to do in {City-EU}
+Marco to book earliest tickets to {City-US}
+Marco to book earliest tickets to {City-UK}
+Marco to book earliest tickets to {City-EU}
+Marco to book tickets to {City-US} on {StartDate}
+Marco to book tickets to {City-UK} on {StartDate}
+Marco to book tickets to {City-EU} on {StartDate}
+Marco to book tickets to {City-US} on {StartDate} and {EndDate}
+Marco to book tickets to {City-UK} on {StartDate} and {EndDate}
+Marco to book tickets to {City-EU} on {StartDate} and {EndDate}
+Marco to ask my friends to come with me to {City-US}
+Marco to ask my friends to come with me to {City-UK}
+Marco to ask my friends to come with me to {City-EU}

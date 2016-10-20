@@ -1,0 +1,38 @@
+{
+  "intents": [
+    {
+      "intent": "PlacesToSee",
+      "slots": [
+        {
+          "city": "City-EU",
+          "type": "AMAZON.EUROPE_CITY"
+        },
+                {
+          "city": "City-UK",
+          "type": "AMAZON.GB_CITY"
+        },
+        {
+          "city": "City-US",
+          "type": "AMAZON.US_CITY"
+        }
+      ]
+    },
+    {
+      "intent": "BookTicket",
+      "slots": [
+        {
+          "name": "StartDate",
+          "type": "AMAZON.DATE"
+        },
+        {
+          "name": "EndDate",
+          "type": "AMAZON.DATE"
+        }
+      ]
+    },
+    {
+      "intent": "PlanTrip",
+      "slots": []
+    }
+  ]
+}
