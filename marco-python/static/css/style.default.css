@@ -928,3 +928,15 @@ a.list-group-item.active > .badge,
 .large-btn {
   font-size: 18px;
 }
+
+a.intro_link {
+  color: #d32f2f;
+  text-shadow: none;
+}
+
+a.intro_link:hover {
+  color: #b71c1c;
+  text-shadow: none;
+  text-decoration: none;
+}
+

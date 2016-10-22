@@ -6,7 +6,6 @@ from google import search
 from bs4 import BeautifulSoup
 import urllib2
 import random
-import geograpy
 import twitter
 import json
 import flickrapi
@@ -18,7 +17,11 @@ app = Flask(__name__)
 def get_place_and_details_for_user():
     db = MySQLdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
     cursor = db.cursor()
-    cursor.execute("SELECT place, place_cnt from (SELECT place, count(place) as place_cnt from places group by place order by count(place) desc limit 7) as T1 order by RAND() limit 1")
+
+    if exclude_city is None:
+        cursor.execute("SELECT place, place_cnt from (SELECT place, count(place) as place_cnt from places group by place order by count(place) desc limit 7) as T1 order by RAND() limit 1")
+    else:
+        cursor.execute("SELECT place, place_cnt from (SELECT place, count(place) as place_cnt from places where NOT place ='" + exclude_city.lower() + "'group by place order by count(place) desc limit 7) as T1 order by RAND() limit 1")
     data = cursor.fetchone()
     return (data[0].title(), data[1])
 
@@ -48,7 +51,8 @@ def update_profile():
 
 @app.route('/trip')
 def get_trip():
-    (place, visits) = get_place_and_details_for_user()
+    exclude_city = request.args.get('exclude')
+    (place, visits) = get_place_and_details_for_user(exclude_city)
     mmt_url = get_booking_url(place)
 
     flickrclient = flickrapi.FlickrAPI(FLICKR_KEY, FLICKR_SECRET, format='parsed-json')
@@ -59,9 +63,14 @@ def get_trip():
     
     return render_template('index.html', place=place, visits=visits, bg_img=bg_img, mmt_url=mmt_url)
 
+@app.route('/')
+def index():
+    return render_template('intro.html')
+
 @app.route('/trip_api')
 def get_trip_api():
-    (place, visits) = get_place_and_details_for_user()
+    exclude_city = request.args.get('exclude')
+    (place, visits) = get_place_and_details_for_user(exclude_city)
 
     return "You seem to have an attachment for " + place + ". You've come across it about " + str(visits) + " times" 
 
@@ -98,5 +107,8 @@ def twitter_api():
 
     api = twitter.Api(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token_key=ACCESS_TOKEN_KEY, access_token_secret=ACCESS_TOKEN_SECRET)
     status = api.PostUpdate("I'm planning a trip to " + city + " with #Marco. Want to join me?")
-    return "success"
+    return "Awesome. I've just informed your friends on twitter about your upcoming trip!"
 
+# Flask 0.10 Compatibility
+#if __name__ =='__main__':
+#    app.run()
