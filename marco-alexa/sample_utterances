@@ -1,23 +1,19 @@
-Marco to plan a trip for me
-Marco where should I go
-Marco where can I go
-Marco which is the best place to visit for me
-Marco to plan a trip
-Marco what can I do in {City-US}
-Marco what can I do in {City-UK}
-Marco what can I do in {City-EU}
-Marco what to do in {City-US}
-Marco what to do in {City-UK}
-Marco what to do in {City-EU}
-Marco to book earliest tickets to {City-US}
-Marco to book earliest tickets to {City-UK}
-Marco to book earliest tickets to {City-EU}
-Marco to book tickets to {City-US} on {StartDate}
-Marco to book tickets to {City-UK} on {StartDate}
-Marco to book tickets to {City-EU} on {StartDate}
-Marco to book tickets to {City-US} on {StartDate} and {EndDate}
-Marco to book tickets to {City-UK} on {StartDate} and {EndDate}
-Marco to book tickets to {City-EU} on {StartDate} and {EndDate}
-Marco to ask my friends to come with me to {City-US}
-Marco to ask my friends to come with me to {City-UK}
-Marco to ask my friends to come with me to {City-EU}
+PlanTrip to plan a trip for me
+PlanTrip where should I go
+PlanTrip where else can I go
+PlanTrip where else should I go    
+PlanTrip where should I go other than {CityEU}
+PlanTrip where should my next trip be to
+PlanTrip where can I go
+PlanTrip where can I go other than {CityEU}
+PlanTrip which is the best place to visit for me
+PlanTrip which is the best place for me to visit
+PlanTrip to plan a trip
+PlacesToSee what can I do there
+PlacesToSee what can I do in {CityEU}
+PlacesToSee what to do in {CityEU}
+BookTicket to book earliest tickets to {CityEU}
+BookTicket to book tickets to {CityEU} on {StartDate}
+BookTicket to book tickets to {CityEU} on {StartDate} and {EndDate}
+GoSocial to ask my friends to come with me to {CityEU}
+GoSocial to tell my friends about my trip to {CityEU}

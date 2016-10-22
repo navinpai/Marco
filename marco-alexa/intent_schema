@@ -4,16 +4,8 @@
       "intent": "PlacesToSee",
       "slots": [
         {
-          "city": "City-EU",
+          "name": "CityEU",
           "type": "AMAZON.EUROPE_CITY"
-        },
-                {
-          "city": "City-UK",
-          "type": "AMAZON.GB_CITY"
-        },
-        {
-          "city": "City-US",
-          "type": "AMAZON.US_CITY"
         }
       ]
     },
@@ -27,12 +19,29 @@
         {
           "name": "EndDate",
           "type": "AMAZON.DATE"
+        },
+        {
+          "name": "CityEU",
+          "type": "AMAZON.EUROPE_CITY"
         }
       ]
     },
     {
       "intent": "PlanTrip",
-      "slots": []
+      "slots": [       {
+          "name": "CityEU",
+          "type": "AMAZON.EUROPE_CITY"
+        }
+      ]
+    },
+    {
+      "intent": "GoSocial",
+      "slots": [
+        {
+          "name": "CityEU",
+          "type": "AMAZON.EUROPE_CITY"
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,10 @@
 'use strict';
 
+var http = require('http');
+var options = {
+    host: 'ec2-52-207-219-42.compute-1.amazonaws.com',
+    port: 1337
+  };
 // --------------- Helpers that build all of the responses -----------------------
 
 function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
@@ -11,7 +16,7 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
         card: {
             type: 'Simple',
             title: `Marco - ${title}`,
-            content: `Marco says - ${output}`,
+            content: `${output}`,
         },
         reprompt: {
             outputSpeech: {
@@ -40,13 +45,10 @@ function getWelcomeResponse(callback) {
     const cardTitle = 'Welcome to Marco';
     const speechOutput = 'Marco is your friendly fellow traveller. ' +
         'He plans trips for you, to places you want to go to! Ask him where you should go!';
-    // If the user either does not reply to the welcome message or says something that is not
-    // understood, they will be prompted again with this text.
-    const repromptText = 'Just ask Marco where you should go!';
-    const shouldEndSession = false;
+    const shouldEndSession = true;
 
     callback(sessionAttributes,
-        buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+        buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
 }
 
 function handleSessionEndRequest(callback) {
@@ -71,74 +73,127 @@ function planTrip(intent, session, callback) {
     const cardTitle = "Plan a Trip";
     let repromptText = '';
     let sessionAttributes = {};
-    const shouldEndSession = false;
+    const shouldEndSession = true;
     let speechOutput = '';
-    let city = '';
-    let city2 = '';
 
-    //if (favoriteColorSlot) {
-    //    const favoriteColor = favoriteColorSlot.value;
-    sessionAttributes = createCityAttributes("Paris");
-        speechOutput = "You seem to have an attachment to Paris, having come across it 22 times";
-        repromptText = "I said " + speechOutput;
-    //} else {
-    //    speechOutput = "I'm not sure what your favorite color is. Please try again.";
-    //    repromptText = "I'm not sure what your favorite color is. You can tell me your " +
-    //        'favorite color by saying, my favorite color is red';
-    //}
+    options.path = "/trip_api";
 
-    callback(sessionAttributes,
-         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    http.get(options, function(res) {
+        res.setEncoding('utf8');
+        var op = '';
+        res.on('data', function (chunk) {
+            op += chunk;
+        });
+        res.on('end', function() {
+            speechOutput = op;
+
+        callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+          });
+        }).on('error', function(e) {
+    speechOutput = "Some Error happened";
+    callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+  });
+
 }
 
 function bookTicket(intent, session, callback) {
+    const cardTitle = "Book Tickets";
     const repromptText = null;
     const sessionAttributes = {};
-    let shouldEndSession = false;
+    let shouldEndSession = true;
     let speechOutput = '';
 
-    speechOutput = "Booked tickets for Paris. Have a great journey";
-    shouldEndSession = true;
-    // Setting repromptText to null signifies that we do not want to reprompt the user.
-    // If the user does not respond or says something that is not understood, the session
-    // will end.
-    callback(sessionAttributes,
-         buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
+    if(intent.slots.CityEU) {
+        options.path = "/book_tickets?city=" + encodeURI(intent.slots.CityEU.value);  
+
+        http.get(options, function(res) {
+            res.setEncoding('utf8');
+            var op = '';
+            res.on('data', function (chunk) {
+                op += chunk;
+            });
+            res.on('end', function() {
+                speechOutput = op;
+
+            callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+              });
+            }).on('error', function(e) {
+        speechOutput = "Some Error happened";
+        callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+      });
+    }
+    else{
+        speechOutput = "Where do you want to book tickets to again?";
+        callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+    }
+
 }
 
 function placesToVisit(intent, session, callback) {
+    const cardTitle = "Things to do";
     const repromptText = null;
     const sessionAttributes = {};
-    let shouldEndSession = false;
+    let shouldEndSession = true;
     let speechOutput = '';
+    let city ='';
 
-    if (session.attributes) {
-        city = session.attributes.city;
-    }
-    
-    if (City-US) {
-        city2 = City-US.value;
-    }
-    if (City-UK) {
-        city2 = City-UK.value;
-    }
-    if (City-EU) {
-        city2 = City-EU.value;
-    }
-    if (city) {
-        speechOutput = "You can visit Louvre in Paris. Your city was " + city + ". and other city was " + city2 +".";
-        shouldEndSession = false;
-    } else {
+    if (intent.slots.CityEU) {
+        options.path = "/what_to_do_api?city=" + encodeURI(intent.slots.CityEU.value);
+
+        http.get(options, function(res) {
+            res.setEncoding('utf8');
+            var op = '';
+            res.on('data', function (chunk) {
+                op += chunk;
+            });
+            res.on('end', function() {
+                speechOutput = op;
+                callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+            });
+        }).on('error', function(e) {
+            speechOutput = "Some Error happened";
+            callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+          });
+
+      } else {
         speechOutput = "I'm not sure which city you're looking for. Can you please repeat what you said?";
+         callback(sessionAttributes, buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
     }
 
-    // Setting repromptText to null signifies that we do not want to reprompt the user.
-    // If the user does not respond or says something that is not understood, the session
-    // will end.
-    callback(sessionAttributes,
-         buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
 }
 
+function tellFriends(intent, session, callback) {
+    const cardTitle = "Post to Twitter";
+    const repromptText = null;
+    const sessionAttributes = {};
+    let shouldEndSession = true;
+    let speechOutput = '';
+    let city ='';
+    
+    if (intent.slots.CityEU) {
+        options.path = "/social_api?city=" + encodeURI(intent.slots.CityEU.value);
+
+        http.get(options, function(res) {
+            res.setEncoding('utf8');
+            var op = '';
+            res.on('data', function (chunk) {
+                op += chunk;
+            });
+            res.on('end', function() {
+                speechOutput = op;
+                callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+            });
+        }).on('error', function(e) {
+            speechOutput = "Some Error happened";
+            callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
+          });
+
+      } else {
+        speechOutput = "I'm not sure which city you're visiting. Can you try again?";
+         callback(sessionAttributes, buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
+    }
+
+}
 
 // --------------- Events -----------------------
 
@@ -175,6 +230,8 @@ function onIntent(intentRequest, session, callback) {
         bookTicket(intent, session, callback);
     } else if (intentName === 'PlacesToSee') {
         placesToVisit(intent, session, callback);
+    } else if (intentName === 'GoSocial') {
+        tellFriends(intent, session, callback);
     } else if (intentName === 'AMAZON.HelpIntent') {
         getWelcomeResponse(callback);
     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
