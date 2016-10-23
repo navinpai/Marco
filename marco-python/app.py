@@ -14,7 +14,7 @@ from configs import *
 app = Flask(__name__)
 
 
-def get_place_and_details_for_user():
+def get_place_and_details_for_user(exclude_city):
     db = MySQLdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
     cursor = db.cursor()
 
