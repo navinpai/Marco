@@ -11,6 +11,7 @@ import json
 import flickrapi
 from configs import *
 
+
 app = Flask(__name__)
 
 
