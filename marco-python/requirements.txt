@@ -20,7 +20,7 @@ jellyfish==0.5.6
 jieba==0.35
 lxml==3.3.5
 newspaper==0.0.9.8
-nltk==3.2.1
+nltk==3.4.5
 numpy==1.11.2
 oauthlib==2.0.0
 pycountry==1.20
