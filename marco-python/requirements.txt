@@ -21,7 +21,7 @@ jieba==0.35
 lxml==3.3.5
 newspaper==0.0.9.8
 nltk==3.2.1
-numpy==1.11.2
+numpy==1.21.0
 oauthlib==2.0.0
 pycountry==1.20
 python-dateutil==2.4.0
